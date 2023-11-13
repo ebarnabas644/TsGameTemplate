@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import ModalComponent from "@/components/ModalComponent.vue";
 import { ref, type HTMLAttributes } from 'vue';
-//import { networkSystemComponent } from '@/core/gameMain';
+import { networkSystemComponent } from '@/core/gameMain';
 import { reactive } from 'vue';
 //import { usePlayerStatStore } from '@/stores/entity';
 //import { inputSystemComponent } from '@/core/gameMain';
 
 const chatInput = ref("")
 const chatbox = ref<HTMLElement>()
-const chat: string[] = reactive(["hello","hello2"])
+const chat: string[] = reactive([])
 const message = ref<HTMLElement>()
 //const playerStore = usePlayerStatStore()
 
 function sendChat(message: string){
-  console.log(message)
-  //networkSystemComponent.sendMessage('message', message)
+  networkSystemComponent.sendMessage('SendMessage', message)
   //chat.push(playerStore.entities.find(entity => entity.tags['controlledby'] == networkSystemComponent.getConnectionId())?.name+ ": "+message)
+  chat.push(message)
   scrollToEnd()
   chatInput.value = ""
 }
