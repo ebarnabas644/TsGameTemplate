@@ -15,7 +15,7 @@ const message = ref<HTMLElement>()
 function sendChat(message: string){
   networkSystemComponent.sendMessage('SendMessage', message)
   //chat.push(playerStore.entities.find(entity => entity.tags['controlledby'] == networkSystemComponent.getConnectionId())?.name+ ": "+message)
-  chat.push(message)
+  //chat.push(message)
   scrollToEnd()
   chatInput.value = ""
 }
