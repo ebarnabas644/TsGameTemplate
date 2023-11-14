@@ -20,7 +20,10 @@ export class NetworkSystemComponent{
             console.log("Message received: "+message)
         })
 
-        this.connection.start().then(() => console.log('Connected to the server')).catch((err) => console.log('Failed to connect: '+err))
+        this.connection.start().then(()=> {
+            console.log('Connected to the server')
+        }
+        ).catch((err) => console.log('Failed to connect: '+err))
     }
 
     public sendMessage(event: string, message: string){
