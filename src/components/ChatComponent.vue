@@ -13,7 +13,11 @@ const message = ref<HTMLElement>()
 //const playerStore = usePlayerStatStore()
 
 function sendChat(message: string){
-  networkSystemComponent.sendMessage('SendMessage', message)
+  let packet = {
+    Type: "chat",
+    Data: message
+  }
+  networkSystemComponent.sendMessage('ClientMessage', packet)
   //chat.push(playerStore.entities.find(entity => entity.tags['controlledby'] == networkSystemComponent.getConnectionId())?.name+ ": "+message)
   //chat.push(message)
   scrollToEnd()
