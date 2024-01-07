@@ -6,7 +6,7 @@ export class NetworkSystemComponent{
 
     constructor() {
         this.connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:5282/chatHub")
+            .withUrl("http://localhost:5282/mainHub")
             .build()
     }
 
