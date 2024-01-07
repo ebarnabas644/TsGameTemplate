@@ -26,7 +26,7 @@ export class NetworkSystemComponent{
         ).catch((err) => console.log('Failed to connect: '+err))
     }
 
-    public sendMessage(event: string, message: string){
+    public sendMessage(event: string, message: object){
         this.connection.send(event, message).then(() => console.log('Message sent')).catch((err) => console.log('Failed to send message: '+err))
     }
 }
