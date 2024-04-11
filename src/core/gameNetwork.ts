@@ -24,9 +24,25 @@ export class NetworkSystemComponent{
             console.log('Connected to the server')
         }
         ).catch((err) => console.log('Failed to connect: '+err))
+
+        this.registerPlayerCommandEvents()
     }
 
     public sendMessage(event: string, message: object){
         this.connection.send(event, message).then(() => console.log('Message sent')).catch((err) => console.log('Failed to send message: '+err))
     }
+
+    private registerPlayerCommandEvents() {
+        document.addEventListener('playerInput', (event: any) => {
+                const commands: InputEvent[] = []
+                event.detail.forEach((command: any) => {
+                        commands.push(command)
+                })
+                const packet = {
+                    Type: "input",
+                    Data: commands
+                  }
+                this.sendMessage('ClientMessage', packet)
+        })
+}
 }
