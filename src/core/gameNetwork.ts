@@ -13,6 +13,7 @@ export class NetworkSystemComponent{
     public initConnection(){
         this.connection.on('connect', () => {
             console.log('Connected to the server')
+            emitCustomEvent('connected', null)
         })
 
         this.connection.on('message', (message: string) => {
@@ -24,6 +25,20 @@ export class NetworkSystemComponent{
             console.log('Connected to the server')
         }
         ).catch((err) => console.log('Failed to connect: '+err))
+
+        this.connection.on('state-update', (message: string) => {
+            emitCustomEvent('state-update', message)
+            console.log("State update received: "+message)
+        })
+
+        this.connection.on('playerCreated', (name: string) => {
+            emitCustomEvent('playerReceived', name)
+            console.log(name)
+        })
+
+        this.connection.onclose(() => {
+            console.log('Connection lost')
+        })
 
         this.registerPlayerCommandEvents()
     }
