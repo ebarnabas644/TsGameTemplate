@@ -1,5 +1,6 @@
 import {emitCustomEvent} from "@/core/utilities/customEventEmitter";
 import * as signalR from "@microsoft/signalr"
+import type { KeyInput } from "./gameInput";
 
 export class NetworkSystemComponent{
     private connection: signalR.HubConnection
@@ -49,13 +50,13 @@ export class NetworkSystemComponent{
 
     private registerPlayerCommandEvents() {
         document.addEventListener('playerInput', (event: any) => {
-                const commands: InputEvent[] = []
+                const commands: KeyInput[] = []
                 event.detail.forEach((command: any) => {
                         commands.push(command)
                 })
                 const packet = {
                     Type: "input",
-                    Data: commands
+                    Data: JSON.stringify(commands)
                   }
                 this.sendMessage('ClientMessage', packet)
         })

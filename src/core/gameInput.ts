@@ -1,13 +1,13 @@
 import { emitCustomEvent } from './utilities/customEventEmitter'
 
-export type InputEvent = {
+export type KeyInput = {
         input: string
         data: { [key: string]: any }
 }
 
 export class InputSystemComponent {
-        private pushedButtons: InputEvent[]
-        private history: InputEvent[]
+        private pushedButtons: KeyInput[]
+        private history: KeyInput[]
         private pressHandler
         private releaseHandler
         //private mousePressHandler
@@ -46,28 +46,28 @@ export class InputSystemComponent {
         private handleButtonPress(event: any) {
                 this.copyToHistory()
                 if (event.key == 'ArrowLeft' || event.key == 'a') {
-                        const inputEvent: InputEvent = {
+                        const inputEvent: KeyInput = {
                                 input: 'leftMoveCommand',
                                 data: {}
                         }
                         this.addInputEvent(inputEvent)
                 }
                 if (event.key == 'ArrowRight' || event.key == 'd') {
-                        const inputEvent: InputEvent = {
+                        const inputEvent: KeyInput = {
                                 input: 'rightMoveCommand',
                                 data: {}
                         }
                         this.addInputEvent(inputEvent)
                 }
                 if (event.key == 'ArrowUp' || event.key == 'w') {
-                        const inputEvent: InputEvent = {
+                        const inputEvent: KeyInput = {
                                 input: 'upMoveCommand',
                                 data: {}
                         }
                         this.addInputEvent(inputEvent)
                 }
                 if (event.key == 'ArrowDown' || event.key == 's') {
-                        const inputEvent: InputEvent = {
+                        const inputEvent: KeyInput = {
                                 input: 'downMoveCommand',
                                 data: {}
                         }
@@ -150,7 +150,7 @@ export class InputSystemComponent {
                 return true
         }
 
-        private addInputEvent(inputToAdd: InputEvent) {
+        private addInputEvent(inputToAdd: KeyInput) {
                 const result = this.pushedButtons.find((x) => x.input == inputToAdd.input)
                 if (result) {
                         result.data = inputToAdd.data
