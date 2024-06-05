@@ -4,7 +4,7 @@ import { ref, type HTMLAttributes } from 'vue';
 import { networkSystemComponent } from '@/core/gameMain';
 import { reactive } from 'vue';
 //import { usePlayerStatStore } from '@/stores/entity';
-//import { inputSystemComponent } from '@/core/gameMain';
+import { inputSystemComponent } from '@/core/gameMain';
 
 const chatInput = ref("")
 const chatbox = ref<HTMLElement>()
@@ -34,11 +34,11 @@ function scrollToEnd(){
 }
 
 function inputFocus(){
-  //inputSystemComponent.disableInput()
+  inputSystemComponent.disableInput()
 }
 
 function inputFocusOut(){
-  //inputSystemComponent.enableInput()
+  inputSystemComponent.enableInput()
 }
 
 document.addEventListener('chatMessage', (event: Event) => {
