@@ -2,7 +2,6 @@ import { emitCustomEvent } from './utilities/customEventEmitter'
 
 export type KeyInput = {
         input: string
-        data: { [key: string]: any }
 }
 
 export class InputSystemComponent {
@@ -47,29 +46,25 @@ export class InputSystemComponent {
                 this.copyToHistory()
                 if (event.key == 'ArrowLeft' || event.key == 'a') {
                         const inputEvent: KeyInput = {
-                                input: 'leftMoveCommand',
-                                data: {}
+                                input: 'leftMoveCommand'
                         }
                         this.addInputEvent(inputEvent)
                 }
                 if (event.key == 'ArrowRight' || event.key == 'd') {
                         const inputEvent: KeyInput = {
-                                input: 'rightMoveCommand',
-                                data: {}
+                                input: 'rightMoveCommand'
                         }
                         this.addInputEvent(inputEvent)
                 }
                 if (event.key == 'ArrowUp' || event.key == 'w') {
                         const inputEvent: KeyInput = {
-                                input: 'upMoveCommand',
-                                data: {}
+                                input: 'upMoveCommand'
                         }
                         this.addInputEvent(inputEvent)
                 }
                 if (event.key == 'ArrowDown' || event.key == 's') {
                         const inputEvent: KeyInput = {
-                                input: 'downMoveCommand',
-                                data: {}
+                                input: 'downMoveCommand'
                         }
                         this.addInputEvent(inputEvent)
                 }
@@ -153,7 +148,6 @@ export class InputSystemComponent {
         private addInputEvent(inputToAdd: KeyInput) {
                 const result = this.pushedButtons.find((x) => x.input == inputToAdd.input)
                 if (result) {
-                        result.data = inputToAdd.data
                         return
                 }
                 this.pushedButtons.push(inputToAdd)
