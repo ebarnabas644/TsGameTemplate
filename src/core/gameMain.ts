@@ -13,5 +13,4 @@ export function initGame(){
     document.addEventListener('canvas-ready', (event: any) => {
         rendererSystemComponent = new RendererSystemComponent()
     })
-    
 }

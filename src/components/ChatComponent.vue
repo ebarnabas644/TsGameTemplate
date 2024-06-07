@@ -55,7 +55,7 @@ document.addEventListener('chatMessage', (event: Event) => {
   <ModalComponent :default-x="0.1" :default-y="0.6" :modalheight="200" :modalwidth="250">
     <div ref="chatbox" class="flex-row p-1 bg-gray-900 bg-opacity-10 h-48 overflow-y-scroll overflow-x-hidden content-end">
       <div class="">
-        <div v-for="msg in chat">
+        <div v-for="msg in chat" :key="msg">
           <p ref="message" class="break-words">
             {{ msg }}
           </p>
