@@ -10,7 +10,8 @@ export function initGame(){
     networkSystemComponent = new NetworkSystemComponent()
     networkSystemComponent.initConnection()
     inputSystemComponent = new InputSystemComponent()
-    document.addEventListener('canvas-ready', (event: any) => {
+    document.addEventListener('canvas-ready', async (event: any) => {
         rendererSystemComponent = new RendererSystemComponent()
+        await rendererSystemComponent.Init()
     })
 }
