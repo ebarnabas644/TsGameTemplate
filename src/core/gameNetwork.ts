@@ -29,7 +29,6 @@ export class NetworkSystemComponent{
 
         this.connection.on('state-update', (message: string) => {
             emitCustomEvent('state-update', message)
-            console.log("State update received: "+message)
         })
 
         this.connection.on('playerCreated', (name: string) => {
