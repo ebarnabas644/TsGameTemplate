@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { Graphics, Application, Assets, Sprite } from 'pixi.js'
+import { getGameState } from './gameState'
+import type { Entity } from './models/entity'
 
 export class RendererSystemComponent {
     public pixiApp: Application
@@ -39,8 +41,21 @@ export class RendererSystemComponent {
         this.pixiApp.stage.addChild(bunny)
 
         this.pixiApp.ticker.add(() => {
-            graphics.x++
-            bunny.x++
+            
+            const localState = getGameState()
+            console.log(localState)
+            /*for (let index = 0; index < localState.length; index++) {
+                const element = localState[index];
+                console.log(element)
+            }*/
+            localState.forEach((item: Entity) => {
+                const rect = new Graphics()
+                rect.rect(item.Position.X, item.Position.Y, 100, 100)
+                rect.fill(0xde3249)
+                this.pixiApp.stage.addChild(rect)
+                console.log("New rect added")
+            })
+            
         })
     }
 }
