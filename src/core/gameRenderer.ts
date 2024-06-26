@@ -5,10 +5,12 @@ import type { Entity } from './models/entity'
 
 export class RendererSystemComponent {
     public pixiApp: Application
+    public renderDictionary: { [id: string]:  PIXI.Graphics | PIXI.Sprite }
 
     constructor() {
         console.log("init renderer")
         this.pixiApp = new Application()
+        this.renderDictionary = {}
     }
 
     async Init(){
@@ -16,6 +18,10 @@ export class RendererSystemComponent {
             width: window.innerWidth,
             height: window.innerHeight,
             backgroundColor: 0x5c812f
+        })
+
+        document.addEventListener('playerCreated', (event: any) => {
+
         })
 
         const canvasLocation = document.getElementById('pixiContainer')
@@ -49,13 +55,18 @@ export class RendererSystemComponent {
                 console.log(element)
             }*/
             localState.forEach((item: Entity) => {
-                const rect = new Graphics()
-                rect.rect(item.Position.X, item.Position.Y, 100, 100)
-                rect.fill(0xde3249)
-                this.pixiApp.stage.addChild(rect)
-                console.log("New rect added")
+                
             })
             
         })
+    }
+
+    addNewPlayer(id: string, entity: Entity) {
+        const rect = new Graphics()
+        rect.rect(entity.Position.X, entity.Position.Y, 100, 100)
+        rect.fill(0xde3249)
+        this.renderDictionary[id] = rect
+        this.pixiApp.stage.addChild(rect)
+        console.log("New rect added")
     }
 }
