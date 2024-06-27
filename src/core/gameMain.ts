@@ -1,7 +1,7 @@
 import {NetworkSystemComponent} from "@/core/gameNetwork";
 import { InputSystemComponent } from "./gameInput";
 import { RendererSystemComponent } from "./gameRenderer";
-import { addItemToState, clearGameState, state, store } from "./gameState";
+import { addItemToState, clearGameState, getGameState, state, store } from "./gameState";
 import { type Entity } from "./models/entity";
 
 export let networkSystemComponent: NetworkSystemComponent
@@ -24,6 +24,7 @@ export function initGame(){
                 const element = items[index];
                 addItemToState(element)
             }
+            rendererSystemComponent.updateRendering(getGameState())
         })
     })
 }

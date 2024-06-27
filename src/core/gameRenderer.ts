@@ -5,12 +5,11 @@ import type { Entity } from './models/entity'
 
 export class RendererSystemComponent {
     public pixiApp: Application
-    public renderDictionary: { [id: string]:  PIXI.Graphics | PIXI.Sprite }
-
+    public renderDictionary: Map<string, PIXI.Graphics | PIXI.Sprite>
     constructor() {
         console.log("init renderer")
         this.pixiApp = new Application()
-        this.renderDictionary = {}
+        this.renderDictionary = new Map<string, PIXI.Graphics | PIXI.Sprite>
     }
 
     async Init(){
@@ -61,11 +60,33 @@ export class RendererSystemComponent {
         })
     }
 
+    updateRendering(items: Entity[]){
+        items.forEach(item => {
+            if(!this.renderDictionary.has(item.Id)){
+                this.addNewPlayer(item.Id, item)
+            }
+            else{
+                const entity = this.renderDictionary.get(item.Id)
+                if(entity !== undefined){
+                    entity.x = item.Position.X
+                    entity.y = item.Position.Y
+                }
+            }
+        });
+        this.renderDictionary.forEach((value: any, key: string) =>{
+            if(items.find(x => x.Id == key) === undefined){
+                const itemToRemove = this.renderDictionary.get(key)
+                itemToRemove?.destroy()
+                this.renderDictionary.delete(key)
+            }
+        })
+    }
+
     addNewPlayer(id: string, entity: Entity) {
         const rect = new Graphics()
         rect.rect(entity.Position.X, entity.Position.Y, 100, 100)
         rect.fill(0xde3249)
-        this.renderDictionary[id] = rect
+        this.renderDictionary.set(id, rect)
         this.pixiApp.stage.addChild(rect)
         console.log("New rect added")
     }
