@@ -1,6 +1,7 @@
 import {emitCustomEvent} from "@/core/utilities/customEventEmitter";
 import * as signalR from "@microsoft/signalr"
 import type { KeyInput } from "./gameInput";
+import { rendererSystemComponent } from "./gameMain";
 
 export class NetworkSystemComponent{
     private connection: signalR.HubConnection
@@ -34,6 +35,7 @@ export class NetworkSystemComponent{
         this.connection.on('playerCreated', (name: string) => {
             emitCustomEvent('playerReceived', name)
             console.log(name)
+            rendererSystemComponent.setFollow(name)
         })
 
         this.connection.onclose(() => {
