@@ -10,9 +10,6 @@ export let rendererSystemComponent: RendererSystemComponent
 export const gameState = state
 
 export function initGame(){
-    networkSystemComponent = new NetworkSystemComponent()
-    networkSystemComponent.initConnection()
-    inputSystemComponent = new InputSystemComponent()
     document.addEventListener('canvas-ready', async (event: any) => {
         rendererSystemComponent = new RendererSystemComponent()
         clearGameState()
@@ -26,5 +23,8 @@ export function initGame(){
             }
             rendererSystemComponent.updateRendering(getGameState())
         })
+        networkSystemComponent = new NetworkSystemComponent()
+        networkSystemComponent.initConnection()
+        inputSystemComponent = new InputSystemComponent()
     })
 }
