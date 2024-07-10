@@ -2,10 +2,14 @@ import * as PIXI from 'pixi.js'
 import { Graphics, Application, Assets, Sprite } from 'pixi.js'
 import { getGameState } from './gameState'
 import type { Entity } from './models/entity'
+import { Viewport } from 'pixi-viewport'
 
 export class RendererSystemComponent {
     public pixiApp: Application
-    public renderDictionary: Map<string, PIXI.Graphics | PIXI.Sprite>
+    private viewport: Viewport
+    public renderDictionary: Map<string, PIXI.Container>
+    private followSet = false
+    private playedId = ""
     constructor() {
         console.log("init renderer")
         this.pixiApp = new Application()
@@ -16,7 +20,7 @@ export class RendererSystemComponent {
         await this.pixiApp.init({
             width: window.innerWidth,
             height: window.innerHeight,
-            backgroundColor: 0x5c812f
+            backgroundColor: 0x5c812f,
         })
 
         document.addEventListener('playerCreated', (event: any) => {
@@ -29,11 +33,24 @@ export class RendererSystemComponent {
                 console.log("Canvas location found")
         }
 
+        this.viewport = new Viewport({
+            screenWidth: window.innerWidth,
+            screenHeight: window.innerHeight,
+            worldWidth: 10000,
+            worldHeight: 10000,
+            events: this.pixiApp.renderer.events
+        })
+
+        this.viewport.clamp({
+            left: 0,
+            right: 10000,
+            bottom: 10000,
+            top: 0
+        })
+
+        this.pixiApp.stage.addChild(this.viewport)
+
         globalThis.__PIXI_APP__ = this.pixiApp;
-        const graphics = new Graphics()
-        graphics.rect(50,50,100,100)
-        graphics.fill(0xde3249)
-        this.pixiApp.stage.addChild(graphics)
 
         // Load the bunny texture
         const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
@@ -43,7 +60,7 @@ export class RendererSystemComponent {
         bunny.anchor.set(0.5);
         bunny.x = 50
         bunny.y = 50
-        this.pixiApp.stage.addChild(bunny)
+        this.viewport.addChild(bunny)
 
         this.pixiApp.ticker.add(() => {
             
@@ -60,7 +77,20 @@ export class RendererSystemComponent {
         })
     }
 
+    setFollow(id: string){
+        this.playedId = id
+    }
+
     updateRendering(items: Entity[]){
+        if(!this.followSet){
+            const toFollow = this.renderDictionary.get(this.playedId)
+            if(toFollow !== undefined){
+                this.viewport.follow(toFollow as PIXI.Container)
+                console.log("Follow set to:" + this.playedId)
+                this.followSet = true
+            }
+
+        }
         items.forEach(item => {
             if(!this.renderDictionary.has(item.Id)){
                 this.addNewPlayer(item.Id, item)
