@@ -114,10 +114,11 @@ export class RendererSystemComponent {
 
     addNewPlayer(id: string, entity: Entity) {
         const rect = new Graphics()
-        rect.rect(entity.Position.X, entity.Position.Y, 100, 100)
+        rect.rect(0, 0, 100, 100)
         rect.fill(0xde3249)
+        rect.pivot.set(50, 50)
         this.renderDictionary.set(id, rect)
-        this.pixiApp.stage.addChild(rect)
+        this.viewport.addChild(rect)
         console.log("New rect added")
     }
 }
