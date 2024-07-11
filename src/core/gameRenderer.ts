@@ -49,7 +49,13 @@ export class RendererSystemComponent {
         })
 
         this.pixiApp.stage.addChild(this.viewport)
+        const mapTexture = await Assets.load('url here')
+        const mapContext = new PIXI.GraphicsContext()
+            .texture(mapTexture, 0xffffff, 0, 0)
 
+        const background = new Graphics(mapContext)
+
+        this.viewport.addChild(background)
         globalThis.__PIXI_APP__ = this.pixiApp;
 
         // Load the bunny texture
