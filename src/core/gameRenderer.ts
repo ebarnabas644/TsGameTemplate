@@ -49,7 +49,7 @@ export class RendererSystemComponent {
         })
 
         this.pixiApp.stage.addChild(this.viewport)
-        const mapTexture = await Assets.load('url here')
+        const mapTexture = await Assets.load('http://localhost:8080/assets/sprites/zefir.png')
         const mapContext = new PIXI.GraphicsContext()
             .texture(mapTexture, 0xffffff, 0, 0)
 
