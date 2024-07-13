@@ -3,6 +3,7 @@ import { Graphics, Application, Assets, Sprite } from 'pixi.js'
 import { getGameState } from './gameState'
 import type { Entity } from './models/entity'
 import { Viewport } from 'pixi-viewport'
+import { TexturePool } from 'pixi.js'
 
 export class RendererSystemComponent {
     public pixiApp: Application
@@ -10,6 +11,7 @@ export class RendererSystemComponent {
     public renderDictionary: Map<string, PIXI.Container>
     private followSet = false
     private playedId = ""
+    private playerSpriteSheet
     constructor() {
         console.log("init renderer")
         this.pixiApp = new Application()
@@ -41,7 +43,12 @@ export class RendererSystemComponent {
             events: this.pixiApp.renderer.events
         })
 
-        this.viewport.clamp({
+        this.viewport.zoom(0.2)
+
+        this.viewport.clampZoom({
+            minScale: 2,
+            maxScale: 2
+        }).clamp({
             left: 0,
             right: 10000,
             bottom: 10000,
@@ -50,6 +57,7 @@ export class RendererSystemComponent {
 
         this.pixiApp.stage.addChild(this.viewport)
         const mapTexture = await Assets.load('http://localhost:8080/assets/sprites/zefir.png')
+        mapTexture.source.scaleMode = 'nearest'
         const mapContext = new PIXI.GraphicsContext()
             .texture(mapTexture, 0xffffff, 0, 0)
 
@@ -57,6 +65,58 @@ export class RendererSystemComponent {
 
         this.viewport.addChild(background)
         globalThis.__PIXI_APP__ = this.pixiApp;
+
+        const playerTexture = await Assets.load("http://localhost:8080/assets/sprites/player.png")
+        playerTexture.source.scaleMode = 'nearest'
+        const playerFrames = {
+            frames: {
+                player1: {
+                    frame: { x: 0, y:0, w:48, h:48 },
+                    sourceSize: { w: 48, h: 48 },
+                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
+                },
+                player2: {
+                    frame: { x: 48, y:0, w:48, h:48 },
+                    sourceSize: { w: 48, h: 48 },
+                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
+                },
+                player3: {
+                    frame: { x: 96, y:0, w:48, h:48 },
+                    sourceSize: { w: 48, h: 48 },
+                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
+                },
+                player4: {
+                    frame: { x: 144, y:0, w:48, h:48 },
+                    sourceSize: { w: 48, h: 48 },
+                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
+                },
+                player5: {
+                    frame: { x: 192, y:0, w:48, h:48 },
+                    sourceSize: { w: 48, h: 48 },
+                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
+                },
+                player6: {
+                    frame: { x: 240, y:0, w:48, h:48 },
+                    sourceSize: { w: 48, h: 48 },
+                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
+                },
+            },
+            meta: {
+                image: 'images/spritesheet.png',
+                format: 'RGBA8888',
+                size: { w: 128, h: 32 },
+                scale: 1
+            },
+            animations: {
+                player: ['player1','player2'] //array of frames by name
+            }
+        }
+
+        this.playerSpriteSheet = new PIXI.Spritesheet(
+            playerTexture, playerFrames
+        )
+
+        await this.playerSpriteSheet.parse()
 
         // Load the bunny texture
         const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
@@ -71,7 +131,7 @@ export class RendererSystemComponent {
         this.pixiApp.ticker.add(() => {
             
             const localState = getGameState()
-            console.log(localState)
+            //console.log(localState)
             /*for (let index = 0; index < localState.length; index++) {
                 const element = localState[index];
                 console.log(element)
@@ -119,12 +179,15 @@ export class RendererSystemComponent {
     }
 
     addNewPlayer(id: string, entity: Entity) {
-        const rect = new Graphics()
-        rect.rect(0, 0, 100, 100)
-        rect.fill(0xde3249)
-        rect.pivot.set(50, 50)
-        this.renderDictionary.set(id, rect)
-        this.viewport.addChild(rect)
+        const anim = new PIXI.AnimatedSprite(this.playerSpriteSheet.animations.player)
+        let a = anim as PIXI.Container
+        console.log(a)
+        console.log("anim cont")
+        anim.pivot.set(50, 50)
+        anim.animationSpeed = 0.05;
+        anim.play()
+        this.renderDictionary.set(id, anim)
+        this.viewport.addChild(anim)
         console.log("New rect added")
     }
 }
