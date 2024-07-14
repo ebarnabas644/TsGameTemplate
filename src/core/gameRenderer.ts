@@ -4,6 +4,7 @@ import { getGameState } from './gameState'
 import type { Entity } from './models/entity'
 import { Viewport } from 'pixi-viewport'
 import { TexturePool } from 'pixi.js'
+import { GameAssetPathProvider } from './gameAssetPathProvider'
 
 export class RendererSystemComponent {
     public pixiApp: Application
@@ -12,10 +13,12 @@ export class RendererSystemComponent {
     private followSet = false
     private playedId = ""
     private playerSpriteSheet
+    private assetPathProvider: GameAssetPathProvider
     constructor() {
         console.log("init renderer")
         this.pixiApp = new Application()
         this.renderDictionary = new Map<string, PIXI.Graphics | PIXI.Sprite>
+        this.assetPathProvider = new GameAssetPathProvider("http://localhost:8080")
     }
 
     async Init(){
@@ -56,7 +59,7 @@ export class RendererSystemComponent {
         })
 
         this.pixiApp.stage.addChild(this.viewport)
-        const mapTexture = await Assets.load('http://localhost:8080/assets/sprites/zefir.png')
+        const mapTexture = await Assets.load(this.assetPathProvider.GetSpritePath("zefir.png"))
         mapTexture.source.scaleMode = 'nearest'
         const mapContext = new PIXI.GraphicsContext()
             .texture(mapTexture, 0xffffff, 0, 0)
@@ -66,7 +69,7 @@ export class RendererSystemComponent {
         this.viewport.addChild(background)
         globalThis.__PIXI_APP__ = this.pixiApp;
 
-        const playerTexture = await Assets.load("http://localhost:8080/assets/sprites/player.png")
+        const playerTexture = await Assets.load(this.assetPathProvider.GetSpritePath("player.png"))
         playerTexture.source.scaleMode = 'nearest'
         const playerFrames = {
             frames: {
