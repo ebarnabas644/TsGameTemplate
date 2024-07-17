@@ -71,52 +71,10 @@ export class RendererSystemComponent {
 
         const playerTexture = await Assets.load(this.assetPathProvider.GetSpritePath("player.png"))
         playerTexture.source.scaleMode = 'nearest'
-        const playerFrames = {
-            frames: {
-                player1: {
-                    frame: { x: 0, y:0, w:48, h:48 },
-                    sourceSize: { w: 48, h: 48 },
-                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
-                },
-                player2: {
-                    frame: { x: 48, y:0, w:48, h:48 },
-                    sourceSize: { w: 48, h: 48 },
-                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
-                },
-                player3: {
-                    frame: { x: 96, y:0, w:48, h:48 },
-                    sourceSize: { w: 48, h: 48 },
-                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
-                },
-                player4: {
-                    frame: { x: 144, y:0, w:48, h:48 },
-                    sourceSize: { w: 48, h: 48 },
-                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
-                },
-                player5: {
-                    frame: { x: 192, y:0, w:48, h:48 },
-                    sourceSize: { w: 48, h: 48 },
-                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
-                },
-                player6: {
-                    frame: { x: 240, y:0, w:48, h:48 },
-                    sourceSize: { w: 48, h: 48 },
-                    spriteSourceSize: { x: 0, y: 0, w: 48, h: 48 }
-                },
-            },
-            meta: {
-                image: 'images/spritesheet.png',
-                format: 'RGBA8888',
-                size: { w: 128, h: 32 },
-                scale: 1
-            },
-            animations: {
-                player: ['player1','player2'] //array of frames by name
-            }
-        }
+        
 
         this.playerSpriteSheet = new PIXI.Spritesheet(
-            playerTexture, playerFrames
+            playerTexture, playerSheet
         )
 
         await this.playerSpriteSheet.parse()
