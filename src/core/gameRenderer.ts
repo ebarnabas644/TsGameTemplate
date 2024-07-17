@@ -5,6 +5,7 @@ import type { Entity } from './models/entity'
 import { Viewport } from 'pixi-viewport'
 import { TexturePool } from 'pixi.js'
 import { GameAssetPathProvider } from './gameAssetPathProvider'
+import { playerSheet } from './spritesheets/playerSheet'
 
 export class RendererSystemComponent {
     public pixiApp: Application
@@ -79,24 +80,9 @@ export class RendererSystemComponent {
 
         await this.playerSpriteSheet.parse()
 
-        // Load the bunny texture
-        const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
-
-        // Create a bunny Sprite
-        const bunny = new Sprite(texture);
-        bunny.anchor.set(0.5);
-        bunny.x = 50
-        bunny.y = 50
-        this.viewport.addChild(bunny)
-
         this.pixiApp.ticker.add(() => {
             
             const localState = getGameState()
-            //console.log(localState)
-            /*for (let index = 0; index < localState.length; index++) {
-                const element = localState[index];
-                console.log(element)
-            }*/
             localState.forEach((item: Entity) => {
                 
             })
@@ -127,6 +113,11 @@ export class RendererSystemComponent {
                 if(entity !== undefined){
                     entity.x = item.Position.X
                     entity.y = item.Position.Y
+                    const sprite = entity.getChildByLabel("animation") as PIXI.AnimatedSprite
+                    if(item.State == "RightMovement"){
+                        sprite.textures = this.playerSpriteSheet.animations.playerRightMove
+                        sprite.play()
+                    }
                 }
             }
         });
@@ -140,15 +131,15 @@ export class RendererSystemComponent {
     }
 
     addNewPlayer(id: string, entity: Entity) {
-        const anim = new PIXI.AnimatedSprite(this.playerSpriteSheet.animations.player)
-        let a = anim as PIXI.Container
-        console.log(a)
-        console.log("anim cont")
-        anim.pivot.set(50, 50)
+        const container = new PIXI.Container
+        const anim = new PIXI.AnimatedSprite(this.playerSpriteSheet.animations.playerIdle)
+        anim.label = "animation"
+        anim.pivot.set(24, 24)
         anim.animationSpeed = 0.05;
         anim.play()
-        this.renderDictionary.set(id, anim)
-        this.viewport.addChild(anim)
+        container.addChild(anim)
+        this.renderDictionary.set(id, container)
+        this.viewport.addChild(container)
         console.log("New rect added")
     }
 }
