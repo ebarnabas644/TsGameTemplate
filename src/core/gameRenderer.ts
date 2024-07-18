@@ -10,7 +10,7 @@ import { playerSheet } from './spritesheets/playerSheet'
 export class RendererSystemComponent {
     public pixiApp: Application
     private viewport: Viewport
-    public renderDictionary: Map<string, PIXI.Container>
+    public renderDictionary: Map<string, Entity>
     private followSet = false
     private playedId = ""
     private playerSpriteSheet
@@ -18,7 +18,7 @@ export class RendererSystemComponent {
     constructor() {
         console.log("init renderer")
         this.pixiApp = new Application()
-        this.renderDictionary = new Map<string, PIXI.Graphics | PIXI.Sprite>
+        this.renderDictionary = new Map<string, Entity>
         this.assetPathProvider = new GameAssetPathProvider("http://localhost:8080")
     }
 
@@ -98,7 +98,7 @@ export class RendererSystemComponent {
         if(!this.followSet){
             const toFollow = this.renderDictionary.get(this.playedId)
             if(toFollow !== undefined){
-                this.viewport.follow(toFollow as PIXI.Container)
+                this.viewport.follow(toFollow.View as PIXI.Container)
                 console.log("Follow set to:" + this.playedId)
                 this.followSet = true
             }
@@ -111,20 +111,16 @@ export class RendererSystemComponent {
             else{
                 const entity = this.renderDictionary.get(item.Id)
                 if(entity !== undefined){
-                    entity.x = item.Position.X
-                    entity.y = item.Position.Y
-                    const sprite = entity.getChildByLabel("animation") as PIXI.AnimatedSprite
-                    if(item.State == "RightMovement"){
-                        sprite.textures = this.playerSpriteSheet.animations.playerRightMove
-                        sprite.play()
-                    }
+                    entity.View.x = item.Position.X
+                    entity.View.y = item.Position.Y
+                    this.updateSpirteState(entity, item)
                 }
             }
         });
         this.renderDictionary.forEach((value: any, key: string) =>{
             if(items.find(x => x.Id == key) === undefined){
                 const itemToRemove = this.renderDictionary.get(key)
-                itemToRemove?.destroy()
+                itemToRemove?.View?.destroy()
                 this.renderDictionary.delete(key)
             }
         })
@@ -135,11 +131,43 @@ export class RendererSystemComponent {
         const anim = new PIXI.AnimatedSprite(this.playerSpriteSheet.animations.playerIdle)
         anim.label = "animation"
         anim.pivot.set(24, 24)
-        anim.animationSpeed = 0.05;
+        anim.anchor.y = 0.5
+        anim.animationSpeed = 0.1;
         anim.play()
         container.addChild(anim)
-        this.renderDictionary.set(id, container)
+        entity.View = container
+        this.renderDictionary.set(id, entity)
         this.viewport.addChild(container)
         console.log("New rect added")
+    }
+
+    updateSpirteState(entity: Entity, update: Entity){
+        const sprite = entity.View.getChildByLabel("animation") as PIXI.AnimatedSprite
+        if(entity.State != update.State){
+            entity.State = update.State
+            sprite.rotation = 0
+            sprite.scale.x = 1
+            if(entity.State == "RightMovement"){
+                sprite.textures = this.playerSpriteSheet.animations.playerRightMove
+                sprite.play()
+            }
+            if(entity.State == "Idle"){
+                sprite.textures = this.playerSpriteSheet.animations.playerIdle
+                sprite.play()
+            }
+            if(entity.State == "LeftMovement"){
+                sprite.textures = this.playerSpriteSheet.animations.playerRightMove
+                sprite.scale.x = -1
+                sprite.play()
+            }
+            if(entity.State == "UpMovement"){
+                sprite.textures = this.playerSpriteSheet.animations.playerUpMove
+                sprite.play()
+            }
+            if(entity.State == "DownMovement"){
+                sprite.textures = this.playerSpriteSheet.animations.playerDownMove
+                sprite.play()
+            }
+        }
     }
 }
