@@ -17,4 +17,4 @@ const uiStore = useStatusStore()
 setUIStore(uiStore)
 app.mount('#app')
 
-initGame()
+await initGame()

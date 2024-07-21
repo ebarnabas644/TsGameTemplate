@@ -11,20 +11,21 @@ export let rendererSystemComponent: RendererSystemComponent
 export let userInterfaceSystemComponent: UserInterfaceSystemComponent
 export const gameState = state
 
-export function initGame(){
+export async function initGame(){
     document.addEventListener('canvas-ready', async (event: any) => {
         rendererSystemComponent = new RendererSystemComponent()
         userInterfaceSystemComponent = new UserInterfaceSystemComponent()
         clearGameState()
         await rendererSystemComponent.Init()
-        document.addEventListener('state-update', (event: any) => {
+        document.addEventListener('state-update', async (event: any) => {
             clearGameState()
-            const items: Entity[] = JSON.parse(event.detail)
+            const messageParsed = JSON.parse(event.detail)
+            const items: Entity[] = messageParsed.Entities
             for (let index = 0; index < items.length; index++) {
                 const element = items[index];
                 addItemToState(element)
             }
-            rendererSystemComponent.updateRendering(getGameState())
+            await rendererSystemComponent.updateRendering(getGameState())
             userInterfaceSystemComponent.updateUI(uiStore, items[0].Position.X, items[0].Position.Y)
         })
         networkSystemComponent = new NetworkSystemComponent()

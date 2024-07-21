@@ -158,10 +158,10 @@ export const playerSheet = {
         scale: 1
     },
     animations: {
-        playerIdle: ['playerIdle1','playerIdle2','playerIdle3','playerIdle4','playerIdle5','playerIdle6'],
-        playerRightMove: ['playerRightMove1','playerRightMove2','playerRightMove3','playerRightMove4','playerRightMove5','playerRightMove6'], //array of frames by name
-        playerLeftMove: ['playerLeftMove1','playerLeftMove2','playerLeftMove3','playerLeftMove4','playerLeftMove5','playerLeftMove6'],
-        playerUpMove: ['playerUpMove1','playerUpMove2','playerUpMove3','playerUpMove4','playerUpMove5','playerUpMove6'],
-        playerDownMove: ['playerDownMove1','playerDownMove2','playerDownMove3','playerDownMove4','playerDownMove5','playerDownMove6']
+        idle: ['playerIdle1','playerIdle2','playerIdle3','playerIdle4','playerIdle5','playerIdle6'],
+        rightMove: ['playerRightMove1','playerRightMove2','playerRightMove3','playerRightMove4','playerRightMove5','playerRightMove6'], //array of frames by name
+        leftMove: ['playerLeftMove1','playerLeftMove2','playerLeftMove3','playerLeftMove4','playerLeftMove5','playerLeftMove6'],
+        upMove: ['playerUpMove1','playerUpMove2','playerUpMove3','playerUpMove4','playerUpMove5','playerUpMove6'],
+        downMove: ['playerDownMove1','playerDownMove2','playerDownMove3','playerDownMove4','playerDownMove5','playerDownMove6']
     }
 }
