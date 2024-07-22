@@ -5,7 +5,7 @@ import type { Entity } from './models/entity'
 import { Viewport } from 'pixi-viewport'
 import { TexturePool } from 'pixi.js'
 import { GameAssetPathProvider } from './gameAssetPathProvider'
-import { playerSheet } from './spritesheets/playerSheet'
+import { playerSheet, slimeSheet } from './spritesheets/playerSheet'
 import * as vec from "@thi.ng/vectors";
 
 export class RendererSystemComponent {
@@ -177,9 +177,16 @@ export class RendererSystemComponent {
 
     async updateSpriteCache(entity: Entity){
         if(!this.spriteDictionary.has(entity.Sprite)){
-            const spriteTextureFromServer = await Assets.load(this.assetPathProvider.GetSpritePath("player.png"))
+            const spriteTextureFromServer = await Assets.load(this.assetPathProvider.GetSpritePath(entity.Sprite))
             spriteTextureFromServer.source.scaleMode = 'nearest'
-            const spriteSheet = new PIXI.Spritesheet(spriteTextureFromServer, playerSheet)
+            let spriteSheet
+            if(entity.Sprite == "slime.png"){
+                spriteSheet = new PIXI.Spritesheet(spriteTextureFromServer, slimeSheet)
+            }
+            else{
+                spriteSheet = new PIXI.Spritesheet(spriteTextureFromServer, playerSheet)
+            }
+
             await spriteSheet.parse()
             this.spriteDictionary.set(entity.Sprite, spriteSheet)
         }

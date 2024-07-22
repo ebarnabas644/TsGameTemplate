@@ -165,3 +165,47 @@ export const playerSheet = {
         downMove: ['playerDownMove1','playerDownMove2','playerDownMove3','playerDownMove4','playerDownMove5','playerDownMove6']
     }
 }
+
+export const slimeSheet = {
+    frames: {
+        playerIdle1: {
+            frame: { x: 0, y:0, w:80, h:80 },
+            sourceSize: { w: 80, h: 80 },
+            spriteSourceSize: { x: 0, y: 0, w: 80, h: 80 }
+        },
+        playerIdle2: {
+            frame: { x: 80, y:0, w:80, h:80 },
+            sourceSize: { w: 80, h: 80 },
+            spriteSourceSize: { x: 0, y: 0, w: 80, h: 80 }
+        },
+        playerIdle3: {
+            frame: { x: 160, y:0, w:80, h:80 },
+            sourceSize: { w: 80, h: 80 },
+            spriteSourceSize: { x: 0, y: 0, w: 80, h: 80 }
+        },
+        playerIdle4: {
+            frame: { x: 240, y:0, w:80, h:80 },
+            sourceSize: { w: 80, h: 80 },
+            spriteSourceSize: { x: 0, y: 0, w: 80, h: 80 }
+        },
+        playerIdle5: {
+            frame: { x: 320, y:0, w:80, h:80 },
+            sourceSize: { w: 80, h: 80 },
+            spriteSourceSize: { x: 0, y: 0, w: 80, h: 80 }
+        },
+        playerIdle6: {
+            frame: { x: 400, y:0, w:80, h:80 },
+            sourceSize: { w: 80, h: 80 },
+            spriteSourceSize: { x: 0, y: 0, w: 80, h: 80 }
+        }
+    },
+    meta: {
+        image: 'images/spritesheet.png',
+        format: 'RGBA8888',
+        size: { w: 128, h: 32 },
+        scale: 1
+    },
+    animations: {
+        idle: ['playerIdle1','playerIdle2','playerIdle3','playerIdle4','playerIdle5','playerIdle6']
+    }
+}
