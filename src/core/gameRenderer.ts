@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Graphics, Application, Assets, Sprite } from 'pixi.js'
-import { getGameState } from './gameState'
+import { gameState } from './gameMain'
 import type { Entity } from './models/entity'
 import { Viewport } from 'pixi-viewport'
 import { TexturePool } from 'pixi.js'
@@ -41,7 +41,7 @@ export class RendererSystemComponent {
         this.attachPixiDebugger()
 
         this.pixiApp.ticker.add((context) => {
-            const localState = getGameState()
+            const localState = gameState.getGameState()
             localState.forEach((item: Entity) => {
                 const entity = this.renderDictionary.get(item.Id)
                 if(entity !== undefined){
